@@ -1,1 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>JUST US ❤️</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    min-height: 100vh;
+    background: linear-gradient(135deg,#160c2b,#35134d,#6c2868);
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "✦     ♡       ✧      ♡      ✦";
+    position: fixed;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+    color: #ffb6e6;
+    opacity: .25;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    padding: 22px;
+    position: relative;
+}
+
+header {
+    text-align: center;
+    padding: 35px 10px;
+}
+
+header h1 {
+    font-size: 43px;
+    letter-spacing: 5px;
+    color: #ffb9e8;
+    text-shadow: 0 0 20px #ff5ac8;
+}
+
+header p {
+    margin-top: 12px;
+    color: #f8c9ed;
+}
+
+.card {
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 22px;
+    padding: 25px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 35px rgba(0,0,0,.2);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 9px 0;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,.95);
+    color: #35134d;
+    font-size: 15px;
+}
+
+button {
+    border: none;
+    padding: 13px 19px;
+    border-radius: 12px;
+    background: linear-gradient(90deg,#e85bb5,#a66bff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px 2px;
+}
+
+button:active {
+    transform: scale(.96);
+}
+
+.full {
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+nav {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+nav button {
+    flex: 1;
+    white-space: nowrap;
+    padding: 12px 9px;
+}
+
+.message {
+    padding: 13px;
+    margin: 10px 0;
+    border-radius: 15px;
+    max-width: 85%;
+    background: #754d88;
+    overflow-wrap: anywhere;
+}
+
+.mine {
+    margin-left: auto;
+    background: #b74b9e;
+}
+
+.message small {
+    display: block;
+    font-size: 10px;
+    opacity: .7;
+    margin-top: 6px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 12px;
+}
+
+.gallery {
+    margin-bottom: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #eab8e5;
+    font-size: 13px;
+}
+
+#status {
+    text-align: center;
+    font-size: 13px;
+    color: #ffc8ed;
+    margin: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>JUST US</h1>
+    <p>Two souls. One private universe. ✨</p>
+</header>
+
+<div id="loginScreen" class="card">
+
+    <h2 style="text-align:center">Welcome Home ❤️</h2>
+
+    <p style="text-align:center;margin:15px">
+        ANTHELEM & OLLEN
+    </p>
+
+    <input id="email" type="email"
+    placeholder="Your email address">
+
+    <input id="password" type="password"
+    placeholder="Your password">
+
+    <button class="full" onclick="login()">
+        Enter Our Universe ✨
+    </button>
+
+    <p id="loginError" style="color:#ffb6c8;text-align:center"></p>
+
+</div>
+
+
+<div id="app" class="hidden">
+
+    <div class="card" style="text-align:center">
+        <h2 id="welcome"></h2>
+        <p>Welcome back to our little universe ❤️</p>
+    </div>
+
+    <nav>
+        <button onclick="showPage('chat')">💬 Chat</button>
+        <button onclick="showPage('cards')">💌 Love Cards</button>
+        <button onclick="showPage('memories')">📸 Memories</button>
+    </nav>
+
+
+    <!-- CHAT -->
+
+    <section id="chat" class="page card">
+
+        <h2>Our Private Chat 💬</h2>
+
+        <div id="messages"
+        style="margin-top:20px;max-height:350px;overflow-y:auto">
+        </div>
+
+        <textarea id="messageInput"
+        placeholder="Write something special..."></textarea>
+
+        <button class="full" onclick="sendMessage()">
+            Send Message ❤️
+        </button>
+
+    </section>
+
+
+    <!-- LOVE CARDS -->
+
+    <section id="cards" class="page card hidden">
+
+        <h2>Our Love Cards 💌</h2>
+
+        <input id="cardTitle"
+        placeholder="Card title">
+
+        <textarea id="cardMessage"
+        placeholder="Write your special message..."></textarea>
+
+        <input id="cardImage" type="file"
+        accept="image/*">
+
+        <button class="full" onclick="uploadCard()">
+            Upload Love Card 💗
+        </button>
+
+        <div id="cardGallery" class="gallery"></div>
+
+    </section>
+
+
+    <!-- MEMORIES -->
+
+    <section id="memories" class="page card hidden">
+
+        <h2>Our Memories 📸</h2>
+
+        <p style="margin:12px 0">
+            Every picture tells a story.
+        </p>
+
+        <input id="memoryImage" type="file"
+        accept="image/*">
+
+        <button class="full" onclick="uploadMemory()">
+            Save Memory ❤️
+        </button>
+
+        <div id="memoryGallery" class="gallery"></div>
+
+    </section>
+
+
+    <button class="full" onclick="logout()">
+        Log Out
+    </button>
+
+</div>
+
+<p id="status"></p>
+
+<footer>
+    Made for ANTHELEM & OLLEN ❤️
+    <br>
+    JUST US — Our Little Universe
+</footer>
+
+</div>
+
+
+<script>
+
+// SUPABASE CONNECTION
+
+const SUPABASE_URL = "https://evjlynbodtafarmvjfwh.supabase.co/rest/v1/";
+
+const SUPABASE_KEY = "sb_secret_hw5tl
+••••••••••••••••";
+
+const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+// OUR TWO ACCOUNTS
+
+const ANTHELEM = "b24c352b-3c3f-4a18-b5eb-97bcc3f77e8f";
+
+const OLLEN = "1bb864a0-cd4f-4a6f-84ec-cc20aee25661";
+
+let currentUser = null;
+let refreshTimer = null;
+
+
+// LOGIN
+
+async function login() {
+
+    const email = document.getElementById("email").value.trim();
+
+    const password = document.getElementById("password").value;
+
+    document.getElementById("loginError").innerText = "Checking login...";
+
+    const {data,error} = await db.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if(error) {
+        document.getElementById("loginError").innerText = error.message;
+        return;
+    }
+
+    await startApp(data.user);
+}
+
+
+// START APPLICATION
+
+async function startApp(user) {
+
+    if(user.id !== ANTHELEM && user.id !== OLLEN) {
+
+        await db.auth.signOut();
+
+        document.getElementById("loginError").innerText =
+        "This account is not authorized.";
+
+        return;
+    }
+
+    currentUser = user;
+
+    document.getElementById("loginScreen").classList.add("hidden");
+
+    document.getElementById("app").classList.remove("hidden");
+
+    document.getElementById("welcome").innerText =
+    user.id === ANTHELEM ? "Hello ANTHELEM ❤️" : "Hello OLLEN ❤️";
+
+    await loadMessages();
+    await loadCards();
+    await loadMemories();
+
+    if(refreshTimer) clearInterval(refreshTimer);
+
+    refreshTimer = setInterval(async () => {
+        if(currentUser) {
+            await loadMessages();
+            await loadCards();
+            await loadMemories();
+        }
+    }, 5000);
+
+    document.getElementById("status").innerText =
+    "Our universe is ready ✨";
+}
+
+
+// PAGE NAVIGATION
+
+function showPage(page) {
+
+    document.querySelectorAll(".page").forEach(p => {
+        p.classList.add("hidden");
+    });
+
+    document.getElementById(page).classList.remove("hidden");
+}
+
+
+// SEND MESSAGE
+
+async function sendMessage() {
+
+    const content = document.getElementById("messageInput").value.trim();
+
+    if(!content) return;
+
+    const recipient =
+    currentUser.id === ANTHELEM ? OLLEN : ANTHELEM;
+
+    const {error} = await db.from("messages").insert({
+        sender_id: currentUser.id,
+        recipient_id: recipient,
+        content: content
+    });
+
+    if(error) {
+        alert(error.message);
+        return;
+    }
+
+    document.getElementById("messageInput").value = "";
+
+    await loadMessages();
+}
+
+
+// LOAD MESSAGES
+
+async function loadMessages() {
+
+    if(!currentUser) return;
+
+    const {data,error} = await db
+        .from("messages")
+        .select("*")
+        .order("created_at",{ascending:true});
+
+    if(error) {
+        console.error(error);
+        return;
+    }
+
+    const box = document.getElementById("messages");
+
+    box.innerHTML = "";
+
+    data.forEach(msg => {
+
+        const div = document.createElement("div");
+
+        div.className = "message " +
+        (msg.sender_id === currentUser.id ? "mine" : "");
+
+        const text = document.createElement("div");
+        text.textContent = msg.content || "";
+
+        const time = document.createElement("small");
+
+        time.textContent =
+        new Date(msg.created_at).toLocaleString();
+
+        div.appendChild(text);
+        div.appendChild(time);
+
+        box.appendChild(div);
+
+    });
+
+    box.scrollTop = box.scrollHeight;
+}
+
+
+// UPLOAD FILE
+
+async function uploadFile(file, folder) {
+
+    if(!file) throw new Error("Please select an image.");
+
+    if(!file.type.startsWith("image/")) {
+        throw new Error("Please select an image file.");
+    }
+
+    if(file.size > 5 * 1024 * 1024) {
+        throw new Error("Image must be smaller than 5 MB.");
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+
+    const path = currentUser.id + "/" +
+    crypto.randomUUID() + "-" + safeName;
+
+    const {error} = await db.storage
+        .from("just-us-media")
+        .upload(path,file);
+
+    if(error) throw error;
+
+    return path;
+}
+
+
+// UPLOAD LOVE CARD
+
+async function uploadCard() {
+
+    try {
+
+        const title = document.getElementById("cardTitle").value.trim();
+
+        const message = document.getElementById("cardMessage").value.trim();
+
+        const file = document.getElementById("cardImage").files[0];
+
+        if(!title || !message || !file) {
+            alert("Please fill in all fields and select an image.");
+            return;
+        }
+
+        const path = await uploadFile(file,"cards");
+
+        const {error} = await db.from("love_cards").insert({
+
+            created_by: currentUser.id,
+            title: title,
+            message: message,
+            image_url: path
+
+        });
+
+        if(error) throw error;
+
+        alert("Your love card has been saved! ❤️");
+
+        document.getElementById("cardTitle").value = "";
+        document.getElementById("cardMessage").value = "";
+        document.getElementById("cardImage").value = "";
+
+        await loadCards();
+
+    } catch(error) {
+        alert(error.message);
+    }
+
+}
+
+
+// LOAD LOVE CARDS
+
+async function loadCards() {
+
+    if(!currentUser) return;
+
+    const {data,error} = await db
+        .from("love_cards")
+        .select("*")
+        .order("created_at",{ascending:false});
+
+    if(error) {
+        console.error(error);
+        return;
+    }
+
+    const gallery = document.getElementById("cardGallery");
+
+    gallery.innerHTML = "";
+
+    for(const card of data) {
+
+        const {data:image,error:imageError} = await db.storage
+            .from("just-us-media")
+            .createSignedUrl(card.image_url,3600);
+
+        const item = document.createElement("div");
+        item.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent = card.title;
+
+        const message = document.createElement("p");
+        message.textContent = card.message;
+
+        item.appendChild(title);
+
+        if(image && !imageError) {
+            const img = document.createElement("img");
+            img.src = image.signedUrl;
+            item.appendChild(img);
+        }
+
+        item.appendChild(message);
+
+        gallery.appendChild(item);
+
+    }
+}
+
+
+// UPLOAD MEMORY
+
+async function uploadMemory() {
+
+    try {
+
+        const file = document.getElementById("memoryImage").files[0];
+
+        if(!file) {
+            alert("Select a picture first.");
+            return;
+        }
+
+        const path = await uploadFile(file,"memories");
+
+        const {error} = await db.from("love_cards").insert({
+
+            created_by: currentUser.id,
+            title: "Our Memory",
+            message: "A special moment ❤️",
+            image_url: path
+
+        });
+
+        if(error) throw error;
+
+        alert("Memory saved successfully! ❤️");
+
+        document.getElementById("memoryImage").value = "";
+
+        await loadMemories();
+
+    } catch(error) {
+        alert(error.message);
+    }
+
+}
+
+
+// LOAD MEMORIES
+
+async function loadMemories() {
+
+    if(!currentUser) return;
+
+    const {data,error} = await db
+        .from("love_cards")
+        .select("*")
+        .eq("title","Our Memory")
+        .order("created_at",{ascending:false});
+
+    if(error) {
+        console.error(error);
+        return;
+    }
+
+    const gallery = document.getElementById("memoryGallery");
+
+    gallery.innerHTML = "";
+
+    for(const memory of data) {
+
+        const {data:image,error:imageError} = await db.storage
+            .from("just-us-media")
+            .createSignedUrl(memory.image_url,3600);
+
+        if(image && !imageError) {
+
+            const img = document.createElement("img");
+
+            img.src = image.signedUrl;
+
+            gallery.appendChild(img);
+
+        }
+
+    }
+
+}
+
+
+// LOGOUT
+
+async function logout() {
+
+    if(refreshTimer) clearInterval(refreshTimer);
+
+    await db.auth.signOut();
+
+    currentUser = null;
+
+    document.getElementById("app").classList.add("hidden");
+
+    document.getElementById("loginScreen").classList.remove("hidden");
+
+    document.getElementById("password").value = "";
+
+    document.getElementById("status").innerText = "";
+
+}
+
+
+// CHECK EXISTING SESSION
+
+async function checkSession() {
+
+    const {data} = await db.auth.getSession();
+
+    if(data.session) {
+
+        await startApp(data.session.user);
+
+    }
+
+}
+
+checkSession();
+
+</script>
+
+</body>
+  </html>
