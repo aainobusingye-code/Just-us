@@ -891,6 +891,19 @@ async function checkSession() {
 checkSession();
 
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async function() {
+        try {
+            await navigator.serviceWorker.register(
+                "/firebase-messaging-sw.js"
+            );
+            console.log("JUST US notification worker registered.");
+        } catch (error) {
+            console.error("Notification worker error:", error);
+        }
+    });
+}
+</script>
 </body>
 </html>
