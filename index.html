@@ -375,9 +375,12 @@ async function startApp(user) {
 
     refreshTimer = setInterval(async () => {
         if(currentUser) {
-            await loadMessages();
-            await loadCards();
-            await loadMemories();
+    await loadMessages();
+    subscribeToMessages();
+    await loadCards();
+    await loadMemories();
+            
+            
         }
     }, 5000);
 
@@ -470,7 +473,32 @@ async function loadMessages() {
 
     box.scrollTop = box.scrollHeight;
 }
+// REAL-TIME MESSAGES
 
+let messageChannel = null;
+
+function subscribeToMessages() {
+
+if(messageChannel) {
+    db.removeChannel(messageChannel);
+}
+
+messageChannel = db
+    .channel("just-us-live-chat")
+    .on(
+        "postgres_changes",
+        {
+            event: "INSERT",
+            schema: "public",
+            table: "messages"
+        },
+        async () => {
+            await loadMessages();
+        }
+    )
+    .subscribe();
+
+}
 
 // UPLOAD FILE
 
