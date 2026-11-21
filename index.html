@@ -19,21 +19,48 @@ body {
     font-family: Arial, sans-serif;
     color: white;
     min-height: 100vh;
-    background: linear-gradient(135deg,#160c2b,#35134d,#6c2868);
+    background: linear-gradient(135deg,#10081f,#35103f,#70265e);
+    background-size: 300% 300%;
+    animation: backgroundGlow 15s ease infinite;
     overflow-x: hidden;
 }
 
-body::before {
-    content: "✦     ♡       ✧      ♡      ✦";
+@keyframes backgroundGlow {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* FLOATING ROMANTIC BACKGROUND */
+
+#floating-romance {
     position: fixed;
-    top: 10%;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 35px;
-    color: #ffb6e6;
-    opacity: .25;
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
+    z-index: 0;
+}
+
+.floating-item {
+    position: absolute;
+    bottom: -60px;
+    animation: floatUp linear forwards;
+    opacity: 0;
+    user-select: none;
+    filter: drop-shadow(0 0 8px rgba(255,130,200,.5));
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    15% {opacity: .7;}
+    85% {opacity: .7;}
+    100% {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 .container {
@@ -42,56 +69,85 @@ body::before {
     margin: auto;
     padding: 22px;
     position: relative;
+    z-index: 1;
 }
 
 header {
     text-align: center;
-    padding: 35px 10px;
+    padding: 38px 10px;
 }
 
 header h1 {
-    font-size: 43px;
-    letter-spacing: 5px;
+    font-size: 45px;
+    letter-spacing: 6px;
     color: #ffb9e8;
-    text-shadow: 0 0 20px #ff5ac8;
+    text-shadow:
+        0 0 10px #ff5ac8,
+        0 0 30px #ff5ac8;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    from {text-shadow: 0 0 10px #ff5ac8;}
+    to {text-shadow: 0 0 30px #ff5ac8,0 0 50px #b84fff;}
 }
 
 header p {
-    margin-top: 12px;
-    color: #f8c9ed;
+    margin-top: 14px;
+    color: #ffd1ef;
+    font-size: 14px;
+    letter-spacing: 1px;
 }
 
 .card {
     background: rgba(255,255,255,.09);
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.19);
+    border-radius: 23px;
     padding: 25px;
     margin-bottom: 20px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 35px rgba(0,0,0,.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 10px 35px rgba(0,0,0,.25);
+    transition: transform .3s, box-shadow .3s;
+}
+
+.card:hover {
+    box-shadow: 0 12px 40px rgba(255,90,200,.12);
 }
 
 input, textarea {
     width: 100%;
     padding: 15px;
     margin: 9px 0;
-    border: none;
+    border: 1px solid transparent;
     outline: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,.95);
+    border-radius: 13px;
+    background: rgba(255,255,255,.96);
     color: #35134d;
     font-size: 15px;
+}
+
+input:focus, textarea:focus {
+    border-color: #ff75cf;
+    box-shadow: 0 0 12px rgba(255,100,200,.35);
 }
 
 button {
     border: none;
     padding: 13px 19px;
-    border-radius: 12px;
+    border-radius: 13px;
     background: linear-gradient(90deg,#e85bb5,#a66bff);
     color: white;
     font-weight: bold;
     cursor: pointer;
     margin: 5px 2px;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 15px rgba(232,91,181,.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(232,91,181,.5);
 }
 
 button:active {
@@ -111,6 +167,7 @@ nav {
     gap: 7px;
     overflow-x: auto;
     margin-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 nav button {
@@ -124,13 +181,14 @@ nav button {
     margin: 10px 0;
     border-radius: 15px;
     max-width: 85%;
-    background: #754d88;
+    background: rgba(117,77,136,.9);
     overflow-wrap: anywhere;
+    border: 1px solid rgba(255,255,255,.1);
 }
 
 .mine {
     margin-left: auto;
-    background: #b74b9e;
+    background: linear-gradient(120deg,#b74b9e,#843eae);
 }
 
 .message small {
@@ -155,6 +213,7 @@ footer {
     padding: 25px;
     color: #eab8e5;
     font-size: 13px;
+    line-height: 1.8;
 }
 
 #status {
@@ -164,10 +223,33 @@ footer {
     margin: 12px;
 }
 
+@media(max-width:480px) {
+    header h1 {
+        font-size: 36px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 19px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
 </style>
 </head>
 
 <body>
+
+<div id="floating-romance"></div>
 
 <div class="container">
 
@@ -198,12 +280,13 @@ footer {
 
 </div>
 
-
 <div id="app" class="hidden">
 
     <div class="card" style="text-align:center">
         <h2 id="welcome"></h2>
-        <p>Welcome back to our little universe ❤️</p>
+        <p style="margin-top:10px">
+            Welcome back to our little universe ❤️
+        </p>
     </div>
 
     <nav>
@@ -211,7 +294,6 @@ footer {
         <button onclick="showPage('cards')">💌 Love Cards</button>
         <button onclick="showPage('memories')">📸 Memories</button>
     </nav>
-
 
     <!-- CHAT -->
 
@@ -232,21 +314,18 @@ footer {
 
     </section>
 
-
     <!-- LOVE CARDS -->
 
     <section id="cards" class="page card hidden">
 
         <h2>Our Love Cards 💌</h2>
 
-        <input id="cardTitle"
-        placeholder="Card title">
+        <input id="cardTitle" placeholder="Card title">
 
         <textarea id="cardMessage"
         placeholder="Write your special message..."></textarea>
 
-        <input id="cardImage" type="file"
-        accept="image/*">
+        <input id="cardImage" type="file" accept="image/*">
 
         <button class="full" onclick="uploadCard()">
             Upload Love Card 💗
@@ -255,7 +334,6 @@ footer {
         <div id="cardGallery" class="gallery"></div>
 
     </section>
-
 
     <!-- MEMORIES -->
 
@@ -267,8 +345,7 @@ footer {
             Every picture tells a story.
         </p>
 
-        <input id="memoryImage" type="file"
-        accept="image/*">
+        <input id="memoryImage" type="file" accept="image/*">
 
         <button class="full" onclick="uploadMemory()">
             Save Memory ❤️
@@ -277,7 +354,6 @@ footer {
         <div id="memoryGallery" class="gallery"></div>
 
     </section>
-
 
     <button class="full" onclick="logout()">
         Log Out
@@ -295,7 +371,6 @@ footer {
 
 </div>
 
-
 <script>
 
 // SUPABASE CONNECTION
@@ -309,7 +384,6 @@ const db = supabase.createClient(
     SUPABASE_KEY
 );
 
-
 // OUR TWO ACCOUNTS
 
 const ANTHELEM = "b24c352b-3c3f-4a18-b5eb-97bcc3f77e8f";
@@ -318,17 +392,61 @@ const OLLEN = "1bb864a0-cd4f-4a6f-84ec-cc20aee25661";
 
 let currentUser = null;
 let refreshTimer = null;
+let messageChannel = null;
+
+
+// FLOATING ROMANTIC ANIMATIONS
+
+const romanticSymbols = [
+    "❤️","💕","💗","🌹",
+    "🌸","🌷","💖","✨"
+];
+
+function createFloatingItem() {
+
+    const container =
+        document.getElementById("floating-romance");
+
+    const item = document.createElement("span");
+
+    item.className = "floating-item";
+
+    item.textContent =
+        romanticSymbols[
+            Math.floor(Math.random() * romanticSymbols.length)
+        ];
+
+    item.style.left = Math.random() * 100 + "%";
+
+    item.style.fontSize =
+        (15 + Math.random() * 19) + "px";
+
+    const duration = 9 + Math.random() * 9;
+
+    item.style.animationDuration = duration + "s";
+
+    container.appendChild(item);
+
+    setTimeout(() => {
+        item.remove();
+    }, duration * 1000);
+}
+
+setInterval(createFloatingItem, 1200);
 
 
 // LOGIN
 
 async function login() {
 
-    const email = document.getElementById("email").value.trim();
+    const email =
+        document.getElementById("email").value.trim();
 
-    const password = document.getElementById("password").value;
+    const password =
+        document.getElementById("password").value;
 
-    document.getElementById("loginError").innerText = "Checking login...";
+    document.getElementById("loginError").innerText =
+        "Checking login...";
 
     const {data,error} = await db.auth.signInWithPassword({
         email,
@@ -336,7 +454,8 @@ async function login() {
     });
 
     if(error) {
-        document.getElementById("loginError").innerText = error.message;
+        document.getElementById("loginError").innerText =
+            error.message;
         return;
     }
 
@@ -353,7 +472,7 @@ async function startApp(user) {
         await db.auth.signOut();
 
         document.getElementById("loginError").innerText =
-        "This account is not authorized.";
+            "This account is not authorized.";
 
         return;
     }
@@ -365,27 +484,30 @@ async function startApp(user) {
     document.getElementById("app").classList.remove("hidden");
 
     document.getElementById("welcome").innerText =
-    user.id === ANTHELEM ? "Hello ANTHELEM ❤️" : "Hello OLLEN ❤️";
+        user.id === ANTHELEM
+        ? "Hello ANTHELEM ❤️"
+        : "Hello OLLEN ❤️";
 
     await loadMessages();
+    subscribeToMessages();
+
     await loadCards();
     await loadMemories();
 
     if(refreshTimer) clearInterval(refreshTimer);
 
     refreshTimer = setInterval(async () => {
+
         if(currentUser) {
-    await loadMessages();
-    subscribeToMessages();
-    await loadCards();
-    await loadMemories();
-            
-            
+            await loadMessages();
+            await loadCards();
+            await loadMemories();
         }
+
     }, 5000);
 
     document.getElementById("status").innerText =
-    "Our universe is ready ✨";
+        "Our universe is ready ✨";
 }
 
 
@@ -405,12 +527,13 @@ function showPage(page) {
 
 async function sendMessage() {
 
-    const content = document.getElementById("messageInput").value.trim();
+    const content =
+        document.getElementById("messageInput").value.trim();
 
     if(!content) return;
 
     const recipient =
-    currentUser.id === ANTHELEM ? OLLEN : ANTHELEM;
+        currentUser.id === ANTHELEM ? OLLEN : ANTHELEM;
 
     const {error} = await db.from("messages").insert({
         sender_id: currentUser.id,
@@ -454,15 +577,16 @@ async function loadMessages() {
         const div = document.createElement("div");
 
         div.className = "message " +
-        (msg.sender_id === currentUser.id ? "mine" : "");
+            (msg.sender_id === currentUser.id ? "mine" : "");
 
         const text = document.createElement("div");
+
         text.textContent = msg.content || "";
 
         const time = document.createElement("small");
 
         time.textContent =
-        new Date(msg.created_at).toLocaleString();
+            new Date(msg.created_at).toLocaleString();
 
         div.appendChild(text);
         div.appendChild(time);
@@ -473,38 +597,40 @@ async function loadMessages() {
 
     box.scrollTop = box.scrollHeight;
 }
-// REAL-TIME MESSAGES
 
-let messageChannel = null;
+
+// REAL-TIME MESSAGES
 
 function subscribeToMessages() {
 
-if(messageChannel) {
-    db.removeChannel(messageChannel);
+    if(messageChannel) {
+        db.removeChannel(messageChannel);
+    }
+
+    messageChannel = db
+        .channel("just-us-live-chat")
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "messages"
+            },
+            async () => {
+                await loadMessages();
+            }
+        )
+        .subscribe();
 }
 
-messageChannel = db
-    .channel("just-us-live-chat")
-    .on(
-        "postgres_changes",
-        {
-            event: "INSERT",
-            schema: "public",
-            table: "messages"
-        },
-        async () => {
-            await loadMessages();
-        }
-    )
-    .subscribe();
-
-}
 
 // UPLOAD FILE
 
 async function uploadFile(file, folder) {
 
-    if(!file) throw new Error("Please select an image.");
+    if(!file) {
+        throw new Error("Please select an image.");
+    }
 
     if(!file.type.startsWith("image/")) {
         throw new Error("Please select an image file.");
@@ -514,10 +640,12 @@ async function uploadFile(file, folder) {
         throw new Error("Image must be smaller than 5 MB.");
     }
 
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+    const safeName =
+        file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
 
-    const path = currentUser.id + "/" +
-    crypto.randomUUID() + "-" + safeName;
+    const path =
+        currentUser.id + "/" +
+        crypto.randomUUID() + "-" + safeName;
 
     const {error} = await db.storage
         .from("just-us-media")
@@ -535,11 +663,14 @@ async function uploadCard() {
 
     try {
 
-        const title = document.getElementById("cardTitle").value.trim();
+        const title =
+            document.getElementById("cardTitle").value.trim();
 
-        const message = document.getElementById("cardMessage").value.trim();
+        const message =
+            document.getElementById("cardMessage").value.trim();
 
-        const file = document.getElementById("cardImage").files[0];
+        const file =
+            document.getElementById("cardImage").files[0];
 
         if(!title || !message || !file) {
             alert("Please fill in all fields and select an image.");
@@ -590,7 +721,8 @@ async function loadCards() {
         return;
     }
 
-    const gallery = document.getElementById("cardGallery");
+    const gallery =
+        document.getElementById("cardGallery");
 
     gallery.innerHTML = "";
 
@@ -601,20 +733,27 @@ async function loadCards() {
             .createSignedUrl(card.image_url,3600);
 
         const item = document.createElement("div");
+
         item.className = "card";
 
         const title = document.createElement("h3");
+
         title.textContent = card.title;
 
         const message = document.createElement("p");
+
         message.textContent = card.message;
 
         item.appendChild(title);
 
         if(image && !imageError) {
+
             const img = document.createElement("img");
+
             img.src = image.signedUrl;
+
             item.appendChild(img);
+
         }
 
         item.appendChild(message);
@@ -631,7 +770,8 @@ async function uploadMemory() {
 
     try {
 
-        const file = document.getElementById("memoryImage").files[0];
+        const file =
+            document.getElementById("memoryImage").files[0];
 
         if(!file) {
             alert("Select a picture first.");
@@ -681,7 +821,8 @@ async function loadMemories() {
         return;
     }
 
-    const gallery = document.getElementById("memoryGallery");
+    const gallery =
+        document.getElementById("memoryGallery");
 
     gallery.innerHTML = "";
 
@@ -710,7 +851,15 @@ async function loadMemories() {
 
 async function logout() {
 
-    if(refreshTimer) clearInterval(refreshTimer);
+    if(refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+    }
+
+    if(messageChannel) {
+        await db.removeChannel(messageChannel);
+        messageChannel = null;
+    }
 
     await db.auth.signOut();
 
@@ -734,9 +883,7 @@ async function checkSession() {
     const {data} = await db.auth.getSession();
 
     if(data.session) {
-
         await startApp(data.session.user);
-
     }
 
 }
@@ -746,4 +893,4 @@ checkSession();
 </script>
 
 </body>
-  </html>
+</html>
