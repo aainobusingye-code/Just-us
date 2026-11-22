@@ -829,7 +829,7 @@ async function loadMemories() {
     for(const memory of data) {
 
         const {data:image,error:imageError} = await db.storage
-            .from("just-us-media")
+            .from("just us media")
             .createSignedUrl(memory.image_url,3600);
 
         if(image && !imageError) {
