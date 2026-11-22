@@ -648,7 +648,7 @@ async function uploadFile(file, folder) {
         crypto.randomUUID() + "-" + safeName;
 
     const {error} = await db.storage
-        .from("just us media")
+        .from("Just us media")
         .upload(path,file);
 
     if(error) throw error;
@@ -729,7 +729,7 @@ async function loadCards() {
     for(const card of data) {
 
         const {data:image,error:imageError} = await db.storage
-            .from("just us media")
+            .from("Just us media")
             .createSignedUrl(card.image_url,3600);
 
         const item = document.createElement("div");
@@ -829,7 +829,7 @@ async function loadMemories() {
     for(const memory of data) {
 
         const {data:image,error:imageError} = await db.storage
-            .from("just us media")
+            .from("Just us media")
             .createSignedUrl(memory.image_url,3600);
 
         if(image && !imageError) {
